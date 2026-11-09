@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Si Pelangi · Belajar Teori & Pencampuran Warna</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{ --font:"Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+html{scroll-behavior:smooth}
+body{margin:0; font-family:var(--font); background:#f1f5f9; color:#1e293b; -webkit-tap-highlight-color:transparent}
+button{font-family:inherit; cursor:pointer}
+.card{background:#fff; border-radius:1.5rem; box-shadow:0 6px 24px -10px rgba(15,23,42,.25); padding:1.1rem}
+.h2{font-size:1.25rem; font-weight:800; margin:0 0 .35rem}
+.p{margin:0 0 .75rem; line-height:1.55; color:#475569}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:3.25rem; padding:.7rem 1.4rem; border-radius:1rem; border:0; font-weight:800; font-size:1.05rem; color:#fff; background:#4f46e5; box-shadow:0 6px 0 #3730a3; transition:transform .1s, box-shadow .1s}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #3730a3}
+.btn.green{background:#16a34a; box-shadow:0 6px 0 #166534} .btn.green:active{box-shadow:0 2px 0 #166534}
+.btn.gray{background:#64748b; box-shadow:0 6px 0 #334155} .btn.gray:active{box-shadow:0 2px 0 #334155}
+.btn.amber{background:#f59e0b; box-shadow:0 6px 0 #b45309; color:#1c1917} .btn.amber:active{box-shadow:0 2px 0 #b45309}
+.btn:disabled{opacity:.5; pointer-events:none}
+button:focus-visible{outline:3px solid #4f46e5; outline-offset:3px}
+
+/* navigasi bawah */
+.nav-btn{flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:.55rem 0 .45rem; font-size:.72rem; font-weight:800; color:#64748b; background:none; border:0}
+.nav-btn.active{color:#4f46e5}
+.nav-btn.active i,.nav-btn.active svg{transform:scale(1.15)}
+.nav-btn svg{width:1.5rem; height:1.5rem; transition:transform .2s}
+
+/* palet */
+.pal{display:flex; flex-direction:column; align-items:center; gap:.4rem; background:none; border:0; font-weight:800; font-size:.95rem}
+.pal .dot{width:4.6rem; height:4.6rem; border-radius:50%; border:4px solid #fff; box-shadow:0 6px 14px -4px rgba(0,0,0,.4), inset 0 -6px 10px rgba(0,0,0,.12); transition:transform .15s}
+.pal:active .dot{transform:scale(.9)}
+.pal.sel .dot{transform:scale(1.12); outline:4px solid #4f46e5; outline-offset:3px}
+#pad{width:100%; height:15rem; border-radius:1.2rem; background:#d9e0ea; touch-action:none; display:block}
+.sz{width:2.8rem; height:2.8rem; border-radius:50%; border:2px solid #cbd5e1; background:#fff; display:grid; place-items:center}
+.sz.on{border-color:#4f46e5; background:#eef2ff}
+.sz i{display:block; border-radius:50%; background:#334155}
+
+/* mixer */
+.mx-row{display:flex; align-items:center; gap:.6rem; padding:.35rem 0}
+.mx-sw{width:3.2rem; height:3.2rem; border-radius:50%; border:3px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.3); flex:none}
+.mx-name{flex:1; font-weight:800; font-size:1.05rem}
+.mx-b{width:3rem; height:3rem; border-radius:.9rem; border:0; background:#e2e8f0; color:#0f172a; display:grid; place-items:center}
+.mx-b.plus{background:#4f46e5; color:#fff}
+.mx-b:active{transform:scale(.92)}
+.mx-n{width:2rem; text-align:center; font-size:1.3rem; font-weight:800; font-variant-numeric:tabular-nums}
+.beaker{position:relative; width:11rem; height:11rem; margin:0 auto}
+.beaker .liq{transform:translateY(140px); transition:transform .6s ease, fill .5s ease}
+.drop{position:absolute; left:50%; top:0; width:14px; height:18px; border-radius:50% 50% 50% 50%/60% 60% 40% 40%; box-shadow:0 0 6px rgba(0,0,0,.25); pointer-events:none; z-index:2}
+.swatch-big{width:5.5rem; height:5.5rem; border-radius:1.4rem; border:4px solid #fff; box-shadow:0 6px 16px -6px rgba(0,0,0,.45); flex:none; transition:background .4s}
+.pill{display:inline-block; padding:.2rem .7rem; border-radius:99px; font-size:.8rem; font-weight:800; background:#eef2ff; color:#4338ca}
+
+/* teori */
+.demo{width:100%; display:flex; align-items:center; justify-content:center; gap:.55rem; padding:.7rem .5rem; border-radius:1.1rem; border:2px solid #e2e8f0; background:#fff; font-weight:800; margin-bottom:.55rem}
+.demo:active{background:#f8fafc}
+.demo .c{width:3.1rem; height:3.1rem; border-radius:50%; border:3px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.3); flex:none; display:grid; place-items:center; color:#64748b; font-size:1.3rem}
+.demo .op{font-size:1.4rem; color:#64748b}
+.demo .lbl{flex:1; text-align:left; font-size:.9rem; line-height:1.2}
+.demo.run .ca{animation:toR .6s ease both}
+.demo.run .cb{animation:toL .6s ease both}
+.demo.run .cr{animation:pop .7s .55s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes toR{50%{transform:translateX(.9rem) scale(1.1)}}
+@keyframes toL{50%{transform:translateX(-.9rem) scale(1.1)}}
+@keyframes pop{0%{transform:scale(.3)}100%{transform:scale(1)}}
+.strip{display:grid; grid-template-columns:repeat(9,1fr); gap:3px; margin:.7rem 0}
+.strip button{aspect-ratio:1/1.3; border:0; border-radius:.6rem; box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.strip button.on{outline:3px solid #4f46e5; outline-offset:2px}
+.chip{padding:.45rem .9rem; border-radius:99px; border:2px solid #e2e8f0; background:#fff; font-weight:800; font-size:.9rem; display:inline-flex; align-items:center; gap:.4rem}
+.chip.on{border-color:#4f46e5; background:#eef2ff}
+.chip i{width:1rem; height:1rem; border-radius:50%; display:inline-block}
+.seg{cursor:pointer; transition:transform .15s, filter .15s; transform-origin:110px 110px}
+.seg:hover{filter:brightness(1.1)}
+.seg.on{transform:scale(1.06); stroke:#1e293b; stroke-width:3}
+
+/* kuis */
+.choice{width:100%; display:flex; align-items:center; gap:.8rem; padding:.8rem 1rem; border-radius:1.1rem; border:3px solid #e2e8f0; background:#fff; font-weight:800; font-size:1.1rem; margin-bottom:.6rem; text-align:left}
+.choice .c{width:2.6rem; height:2.6rem; border-radius:50%; border:3px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,.3); flex:none}
+.choice.bad{border-color:#ef4444; background:#fef2f2; opacity:.6}
+.choice.good{border-color:#16a34a; background:#f0fdf4}
+.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+.bounce{animation:bounce .7s}
+@keyframes bounce{30%{transform:scale(1.06) rotate(-1deg)}60%{transform:scale(.98) rotate(1deg)}}
+.bar{height:.7rem; border-radius:99px; background:#e2e8f0; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#f59e0b,#16a34a); transition:width .5s}
+.confetti{position:fixed; top:-12px; width:10px; height:14px; z-index:60; pointer-events:none; border-radius:2px}
+#toast{position:fixed; left:50%; bottom:5.6rem; transform:translate(-50%,20px); max-width:min(92vw,30rem); background:#1e293b; color:#fff; padding:.7rem 1rem; border-radius:1rem; font-size:.95rem; line-height:1.4; opacity:0; pointer-events:none; transition:all .3s; z-index:50; text-align:center}
+#toast.show{opacity:.96; transform:translate(-50%,0)}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="mx-auto max-w-xl min-h-screen flex flex-col">
+  <header class="sticky top-0 z-40 px-4 py-3 flex items-center justify-between text-white" style="background:linear-gradient(90deg,#4f46e5,#db2777,#f59e0b)">
+    <div>
+      <div class="text-xs font-bold opacity-90 tracking-wider">MEDIA BELAJAR INTERAKTIF</div>
+      <h1 class="text-xl font-extrabold leading-tight m-0">Si Pelangi · Mencampur Warna</h1>
+    </div>
+    <button id="soundBtn" class="w-12 h-12 rounded-2xl bg-white/20 grid place-items-center text-white border-0" aria-label="Suara aktif" aria-pressed="true"><i data-lucide="volume-2"></i></button>
+  </header>
+
+  <main class="flex-1 px-4 pt-4 pb-32">
+
+    <!-- 1. PALET + KANVAS -->
+    <section id="v-palet">
+      <div class="card mb-4">
+        <h2 class="h2">1. Lima Warna Dasar</h2>
+        <p class="p">Ketuk warna untuk mendengar namanya, lalu menggambarlah di kanvas!</p>
+        <div id="palette" class="flex flex-wrap justify-center gap-3 mb-3"></div>
+        <div id="palInfo" class="rounded-2xl p-3 text-center font-bold" style="background:#f8fafc"></div>
+      </div>
+      <div class="card">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="h2 m-0">Kanvas Menggambar</h2>
+          <div class="flex gap-2 items-center" id="sizes"></div>
+        </div>
+        <canvas id="pad" aria-label="Kanvas menggambar"></canvas>
+        <button id="clearPad" class="btn gray w-full mt-4"><i data-lucide="trash-2"></i> Hapus Kanvas</button>
+      </div>
+    </section>
+
+    <!-- 2. LAB PENCAMPURAN -->
+    <section id="v-lab" class="hidden">
+      <div class="card mb-4">
+        <h2 class="h2">2. Lab Pencampur Warna</h2>
+        <p class="p">Tambahkan tetes warna dengan tombol <b>+</b>. Lihat warnanya berubah, lalu tekan <b>Cek Hasil</b>!</p>
+        <div id="beaker" class="beaker"></div>
+        <div id="labMixer" class="mt-2"></div>
+        <div class="flex gap-3 mt-4">
+          <button id="btnCheck" class="btn green flex-1"><i data-lucide="sparkles"></i> Cek Hasil</button>
+          <button id="btnClear" class="btn gray"><i data-lucide="rotate-ccw"></i></button>
+        </div>
+      </div>
+      <div id="labResult" class="card hidden"></div>
+      <div class="card mt-4">
+        <h3 class="font-extrabold m-0 mb-1">Coba resep ini</h3>
+        <div id="recipes" class="flex flex-wrap gap-2"></div>
+      </div>
+    </section>
+
+    <!-- 3. TEORI -->
+    <section id="v-teori" class="hidden">
+      <div class="card mb-4">
+        <h2 class="h2">3. Roda Warna</h2>
+        <p class="p">Ada 12 warna: <b>3 primer</b>, <b>3 sekunder</b>, dan <b>6 tersier</b>. Ketuk bagian roda untuk mendengarnya.</p>
+        <svg id="wheel" viewBox="0 0 220 220" class="w-full max-w-xs mx-auto block" role="img" aria-label="Roda warna 12 bagian"></svg>
+        <div id="wheelInfo" class="rounded-2xl p-3 text-center font-bold mt-2" style="background:#f8fafc">Ketuk salah satu warna di roda.</div>
+      </div>
+      <div class="card mb-4">
+        <h2 class="h2">Warna Sekunder</h2>
+        <p class="p">Campurkan <b>dua warna primer</b> yang sama banyak, maka lahirlah warna sekunder. Tekan untuk melihat demonya!</p>
+        <div id="demoSek"></div>
+      </div>
+      <div class="card mb-4">
+        <h2 class="h2">Warna Tersier</h2>
+        <p class="p">Campurkan <b>satu warna primer</b> dengan <b>satu warna sekunder</b> yang bersebelahan di roda warna.</p>
+        <div id="demoTer"></div>
+      </div>
+      <div class="card">
+        <h2 class="h2">Efek Putih & Hitam</h2>
+        <p class="p"><b>Tint</b> = warna + putih (lebih terang). <b>Shade</b> = warna + hitam (lebih gelap). Pilih warna, lalu tambahkan putih atau hitam!</p>
+        <div id="tsChips" class="flex flex-wrap gap-2 mb-2"></div>
+        <div class="flex items-center gap-3">
+          <div id="tsSwatch" class="swatch-big"></div>
+          <div><div id="tsName" class="font-extrabold text-lg"></div><div id="tsCat" class="pill mt-1"></div></div>
+        </div>
+        <div id="tsStrip" class="strip"></div>
+        <div class="flex justify-between text-xs font-bold text-slate-500 -mt-1 mb-3"><span>← Shade (gelap)</span><span>Tint (terang) →</span></div>
+        <div class="flex gap-3">
+          <button id="tsBlack" class="btn gray flex-1"><i data-lucide="plus"></i> Hitam</button>
+          <button id="tsWhite" class="btn amber flex-1"><i data-lucide="plus"></i> Putih</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KUIS -->
+    <section id="v-kuis" class="hidden">
+      <div id="quiz"></div>
+    </section>
+  </main>
+</div>
+
+<nav class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200" style="padding-bottom:env(safe-area-inset-bottom,0px)">
+  <div class="mx-auto max-w-xl flex">
+    <button class="nav-btn active" data-v="palet"><i data-lucide="palette"></i>Palet</button>
+    <button class="nav-btn" data-v="lab"><i data-lucide="flask-conical"></i>Lab</button>
+    <button class="nav-btn" data-v="teori"><i data-lucide="book-open"></i>Teori</button>
+    <button class="nav-btn" data-v="kuis"><i data-lucide="gamepad-2"></i>Kuis</button>
+  </div>
+</nav>
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};
+var toHex=function(c){return '#'+c.map(function(v){return Math.round(clamp(v,0,255)).toString(16).padStart(2,'0');}).join('');};
+var icons=function(){ if(window.lucide) window.lucide.createIcons(); };
+
+/* =====================================================================
+   DATA WARNA
+   ===================================================================== */
+var IDS=['red','yellow','blue','white','black'];
+var BASE={
+  red:{name:'Merah',hex:'#E4262C',fact:'Merah adalah warna primer. Hangat dan berani, seperti apel dan api.'},
+  yellow:{name:'Kuning',hex:'#FFD91A',fact:'Kuning adalah warna primer. Cerah dan ceria, seperti matahari.'},
+  blue:{name:'Biru',hex:'#1E5BC6',fact:'Biru adalah warna primer. Sejuk dan tenang, seperti langit dan laut.'},
+  white:{name:'Putih',hex:'#FFFFFF',fact:'Putih dipakai untuk mencerahkan warna. Hasilnya disebut tint.'},
+  black:{name:'Hitam',hex:'#0C0C10',fact:'Hitam dipakai untuk menggelapkan warna. Hasilnya disebut shade.'}
+};
+// Roda warna RYB (urutan: Merah -> Kuning -> Biru -> kembali ke Merah), v = takaran [R,Y,B]
+var WHEEL=[
+  {n:'Merah',t:'primer',v:[1,0,0]},{n:'Merah Jingga',t:'tersier',v:[3,1,0]},{n:'Jingga',t:'sekunder',v:[1,1,0]},
+  {n:'Kuning Jingga',t:'tersier',v:[1,3,0]},{n:'Kuning',t:'primer',v:[0,1,0]},{n:'Kuning Hijau',t:'tersier',v:[0,3,1]},
+  {n:'Hijau',t:'sekunder',v:[0,1,1]},{n:'Biru Hijau',t:'tersier',v:[0,1,3]},{n:'Biru',t:'primer',v:[0,0,1]},
+  {n:'Biru Ungu',t:'tersier',v:[1,0,3]},{n:'Ungu',t:'sekunder',v:[1,0,1]},{n:'Merah Ungu',t:'tersier',v:[3,0,1]}
+];
+
+/* =====================================================================
+   MESIN PENCAMPURAN WARNA (subtraktif RYB, bukan RGB digital)
+   Interpolasi trilinear pada kubus RYB: tiap sudut kubus = warna pigmen nyata.
+   Takaran dinormalkan (nilai terbesar = 1) sehingga Merah+Kuning = Jingga murni,
+   Kuning+Biru = Hijau, Biru+Merah = Ungu, dan ketiganya = Cokelat.
+   ===================================================================== */
+var CORNERS={'000':[255,255,255],'100':[228,38,44],'010':[255,217,26],'001':[30,91,198],
+             '110':[255,138,31],'101':[122,47,176],'011':[46,168,74],'111':[90,58,34]};
+function rybToRgb(r,y,b){
+  var out=[0,0,0];
+  for(var k in CORNERS){
+    var w=(k[0]==='1'?r:1-r)*(k[1]==='1'?y:1-y)*(k[2]==='1'?b:1-b), c=CORNERS[k];
+    out[0]+=w*c[0]; out[1]+=w*c[1]; out[2]+=w*c[2];
+  }
+  return out;
+}
+// posisi warna di roda (0..360): 0=Merah, 120=Kuning, 240=Biru
+function calcHue(r,y,b){
+  var m=Math.min(r,y,b), rr=r-m, yy=y-m, bb=b-m, t;
+  if(bb===0&&(rr>0||yy>0)){ t=yy/(rr+yy); return 120*t; }
+  if(rr===0){ t=bb/(yy+bb); return 120+120*t; }
+  t=rr/(bb+rr); return 240+120*t;
+}
+var TINT={'Merah':'Merah Muda (Pink)','Jingga':'Jingga Muda (Peach)','Ungu':'Ungu Muda (Lavender)','Cokelat':'Cokelat Muda (Krem)'};
+function analyze(a){
+  var P=a.red+a.yellow+a.blue, W=a.white, K=a.black, KW=1.3;
+  if(P+W+K<=0) return {empty:true};
+  var base=[255,255,255], hue=null, rel=0;
+  if(P>0){
+    var mx=Math.max(a.red,a.yellow,a.blue), r=a.red/mx, y=a.yellow/mx, b=a.blue/mx;
+    base=rybToRgb(r,y,b); rel=Math.min(r,y,b); if(rel<.45) hue=calcHue(r,y,b);
+  }
+  var wk=K*KW, sum=P+W+wk, dark=[12,12,16];
+  var rgb=[0,1,2].map(function(i){ return (base[i]*P+255*W+dark[i]*wk)/sum; });
+  var res={rgb:rgb,hex:toHex(rgb),P:P,W:W,K:K,tw:W/sum,sk:wk/sum,empty:false,mod:'none',brown:false};
+  if(P===0){
+    res.cat='Warna Netral';
+    if(K===0){ res.name='Putih'; res.catKey='putih'; }
+    else if(W===0){ res.name='Hitam'; res.catKey='hitam'; }
+    else { var lt=W/(W+wk); res.name=lt>.6?'Abu-abu Muda':(lt<.4?'Abu-abu Tua':'Abu-abu'); res.catKey='abu'; }
+    return res;
+  }
+  var baseName, catBase;
+  if(rel>=.45){ res.brown=true; baseName='Cokelat'; catBase='cokelat'; }
+  else {
+    var idx=Math.round(hue/30)%12, d=Math.abs(hue-idx*30), dev=Math.min(d,360-d);
+    res.idx=idx; res.dev=dev; res.approx=dev>8;
+    baseName=WHEEL[idx].n; catBase=res.approx?'campuran':WHEEL[idx].t;
+  }
+  if(res.tw>=.12&&res.sk<.12) res.mod='tint';
+  else if(res.sk>=.12&&res.tw<.12) res.mod='shade';
+  else if(res.tw>=.12&&res.sk>=.12) res.mod='tone';
+  var name=baseName;
+  if(res.mod==='tint') name=TINT[baseName]||(baseName+' Muda');
+  else if(res.mod==='shade') name=baseName+' Tua';
+  else if(res.mod==='tone') name=baseName+' Kusam';
+  if(res.tw>=.8) name='Hampir Putih'; else if(res.sk>=.75) name='Hampir Hitam';
+  res.baseName=baseName; res.name=(res.approx&&res.mod==='none'?'Mendekati ':'')+name;
+  if(res.mod==='tint'){ res.cat='Tint (warna + putih)'; res.catKey='tint'; }
+  else if(res.mod==='shade'){ res.cat='Shade (warna + hitam)'; res.catKey='shade'; }
+  else if(res.mod==='tone'){ res.cat='Tone (warna + putih + hitam)'; res.catKey='tone'; }
+  else {
+    res.catKey=catBase;
+    res.cat={primer:'Warna Primer',sekunder:'Warna Sekunder',tersier:'Warna Tersier',campuran:'Warna Campuran',cokelat:'Warna Netral Gelap'}[catBase];
+  }
+  return res;
+}
+function explain(res){
+  switch(res.catKey){
+    case 'primer': return 'Ini adalah warna primer! Warna primer tidak bisa dibuat dari campuran warna lain.';
+    case 'sekunder': return 'Ini adalah warna sekunder! Warna sekunder lahir dari dua warna primer yang sama banyak.';
+    case 'tersier': return 'Ini adalah warna tersier! Warna tersier dibuat dari warna primer dan warna sekunder di sebelahnya.';
+    case 'campuran': return 'Ini warna campuran yang ada di antara dua warna pada roda warna, paling dekat dengan '+res.baseName+'.';
+    case 'cokelat': return 'Kalau ketiga warna primer bercampur, hasilnya cokelat yang kusam.';
+    case 'tint': return 'Ini disebut tint, yaitu warna yang dicerahkan dengan putih.';
+    case 'shade': return 'Ini disebut shade, yaitu warna yang digelapkan dengan hitam.';
+    case 'tone': return 'Ini disebut tone, karena warna dicampur putih dan hitam sehingga lebih kusam.';
+    case 'putih': return 'Putih adalah warna netral. Putih dipakai untuk mencerahkan warna lain.';
+    case 'hitam': return 'Hitam adalah warna netral. Hitam dipakai untuk menggelapkan warna lain.';
+    default: return 'Abu-abu adalah campuran putih dan hitam. Ini warna netral.';
+  }
+}
+function mixSentence(a,res){
+  var ks=IDS.filter(function(k){return a[k]>0;});
+  if(ks.length===1) return 'Kamu memakai '+BASE[ks[0]].name+' saja. '+explain(res);
+  var eq=ks.every(function(k){return a[k]===a[ks[0]];});
+  var lead=ks.map(function(k){return BASE[k].name+(eq?'':' ('+a[k]+' tetes)');}).join(' ditambah ');
+  return lead+' menjadi '+(res.catKey==='campuran'?'warna yang mendekati '+res.baseName:res.name)+'. '+explain(res);
+}
+var blank=function(){return {red:0,yellow:0,blue:0,white:0,black:0};};
+var recipeOf=function(o){ var a=blank(); for(var k in o) a[k]=o[k]; return a; };
+
+/* =====================================================================
+   SUARA (Web Speech API) + EFEK BUNYI (WebAudio) + TOAST
+   ===================================================================== */
+var soundOn=true, voice=null, synth=window.speechSynthesis, ac=null, toastT;
+function pickVoice(){ if(!synth) return; var vs=synth.getVoices();
+  voice=vs.filter(function(v){return /^id/i.test(v.lang);})[0]||vs.filter(function(v){return /indones/i.test(v.name);})[0]||null; }
+if(synth){ pickVoice(); synth.onvoiceschanged=pickVoice; }
+function toast(t){ var el=$('#toast'); el.textContent=t; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){el.classList.remove('show');},Math.min(8000,2200+t.length*45)); }
+function say(text){
+  toast(text);
+  if(!soundOn||!synth) return;
+  synth.cancel();
+  var u=new SpeechSynthesisUtterance(text); u.lang='id-ID'; if(voice) u.voice=voice; u.rate=.95; u.pitch=1.12; synth.speak(u);
+}
+function tone(f,d,type,v,when){
+  if(!soundOn) return;
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    var o=ac.createOscillator(), g=ac.createGain(), t=ac.currentTime+(when||0);
+    o.type=type||'sine'; o.frequency.value=f; g.gain.setValueAtTime(v||.12,t); g.gain.exponentialRampToValueAtTime(.001,t+d);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+d);
+  }catch(e){}
+}
+var sfx={plop:function(){tone(520,.12,'sine',.12);},
+  ok:function(){[523,659,784,1046].forEach(function(f,i){tone(f,.2,'triangle',.12,i*.09);});},
+  bad:function(){tone(220,.25,'sawtooth',.07);tone(165,.3,'sawtooth',.07,.12);}};
+$('#soundBtn').addEventListener('click',function(){
+  soundOn=!soundOn; this.setAttribute('aria-pressed',soundOn); this.setAttribute('aria-label',soundOn?'Suara aktif':'Suara mati');
+  this.innerHTML='<i data-lucide="'+(soundOn?'volume-2':'volume-x')+'"></i>'; icons(); if(!soundOn&&synth) synth.cancel();
+  toast(soundOn?'Suara dinyalakan':'Suara dimatikan');
+});
+
+/* =====================================================================
+   NAVIGASI (SPA)
+   ===================================================================== */
+var VIEWS=['palet','lab','teori','kuis'];
+function go(v){
+  VIEWS.forEach(function(x){ $('#v-'+x).classList.toggle('hidden',x!==v); });
+  $$('.nav-btn').forEach(function(b){ b.classList.toggle('active',b.dataset.v===v); });
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='palet') resizePad();
+}
+$$('.nav-btn').forEach(function(b){ b.addEventListener('click',function(){ go(b.dataset.v); }); });
+
+/* =====================================================================
+   1. PALET + KANVAS
+   ===================================================================== */
+var sel='red', brush=14, drawing=false, lx=0, ly=0;
+var pad=$('#pad'), pctx=pad.getContext('2d');
+$('#palette').innerHTML=IDS.map(function(id){
+  return '<button class="pal'+(id===sel?' sel':'')+'" data-id="'+id+'" aria-label="'+BASE[id].name+'"><span class="dot" style="background:'+BASE[id].hex+'"></span>'+BASE[id].name+'</button>';
+}).join('');
+function showInfo(){ $('#palInfo').innerHTML='<span style="color:'+(sel==='white'?'#64748b':BASE[sel].hex)+'">'+BASE[sel].name+'</span> — '+BASE[sel].fact; }
+showInfo();
+$('#palette').addEventListener('click',function(e){
+  var b=e.target.closest('.pal'); if(!b) return;
+  sel=b.dataset.id; $$('.pal').forEach(function(x){x.classList.toggle('sel',x===b);}); showInfo(); say(BASE[sel].name); sfx.plop();
+});
+var SIZES=[6,14,26];
+$('#sizes').innerHTML=SIZES.map(function(s,i){ return '<button class="sz'+(s===brush?' on':'')+'" data-s="'+s+'" aria-label="Kuas '+(i+1)+'"><i style="width:'+(6+i*5)+'px;height:'+(6+i*5)+'px"></i></button>'; }).join('');
+$('#sizes').addEventListener('click',function(e){ var b=e.target.closest('.sz'); if(!b) return; brush=+b.dataset.s; $$('.sz').forEach(function(x){x.classList.toggle('on',x===b);}); });
+function resizePad(){
+  var r=pad.getBoundingClientRect(); if(!r.width) return;
+  var dpr=window.devicePixelRatio||1, w=Math.round(r.width*dpr), h=Math.round(r.height*dpr);
+  if(pad.width!==w||pad.height!==h){ pad.width=w; pad.height=h; }
+}
+function pos(e){ var r=pad.getBoundingClientRect(); return [(e.clientX-r.left)*(pad.width/r.width),(e.clientY-r.top)*(pad.height/r.height)]; }
+function dot(x,y){ pctx.fillStyle=BASE[sel].hex; pctx.beginPath(); pctx.arc(x,y,brush*(window.devicePixelRatio||1)/2,0,6.2832); pctx.fill(); }
+pad.addEventListener('pointerdown',function(e){ resizePad(); drawing=true; pad.setPointerCapture(e.pointerId); var p=pos(e); lx=p[0]; ly=p[1]; dot(lx,ly); });
+pad.addEventListener('pointermove',function(e){
+  if(!drawing) return; var p=pos(e);
+  pctx.strokeStyle=BASE[sel].hex; pctx.lineWidth=brush*(window.devicePixelRatio||1); pctx.lineCap='round'; pctx.lineJoin='round';
+  pctx.beginPath(); pctx.moveTo(lx,ly); pctx.lineTo(p[0],p[1]); pctx.stroke(); lx=p[0]; ly=p[1];
+});
+['pointerup','pointercancel','pointerleave'].forEach(function(ev){ pad.addEventListener(ev,function(){drawing=false;}); });
+$('#clearPad').addEventListener('click',function(){ pctx.clearRect(0,0,pad.width,pad.height); say('Kanvas dibersihkan. Ayo menggambar lagi!'); });
+window.addEventListener('resize',resizePad);
+
+/* =====================================================================
+   KOMPONEN: BEAKER & MIXER (dipakai di Lab dan Kuis)
+   ===================================================================== */
+function Beaker(root,uid){
+  root.innerHTML='<svg viewBox="0 0 200 200" class="w-full h-full" aria-hidden="true"><defs><clipPath id="bc'+uid+'"><path d="M44 24L44 150Q44 176 70 176L130 176Q156 176 156 150L156 24Z"/></clipPath></defs>'+
+    '<g clip-path="url(#bc'+uid+')"><rect class="liq" x="40" y="36" width="120" height="140" fill="#fff"/></g>'+
+    '<path d="M44 24L44 150Q44 176 70 176L130 176Q156 176 156 150L156 24" fill="rgba(148,163,184,.12)" stroke="#94a3b8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<path d="M36 24H164" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>'+
+    '<path d="M56 60H76M56 90H70M56 120H76" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg>';
+  var liq=$('.liq',root);
+  return {set:function(res,total){
+    if(!res||res.empty||total<=0){ liq.style.transform='translateY(140px)'; return; }
+    var h=12+Math.min(1,total/12)*122; liq.style.transform='translateY('+(140-h)+'px)'; liq.style.fill=res.hex;
+  }};
+}
+function dropAnim(root,color){
+  var d=document.createElement('i'); d.className='drop'; d.style.background=color; root.appendChild(d);
+  var dist=root.clientHeight*.55;
+  d.animate([{transform:'translate(-50%,-6px) scale(.7)',opacity:0},{opacity:1,offset:.15},{transform:'translate(-50%,'+dist+'px) scale(1)',opacity:1}],
+    {duration:520,easing:'cubic-bezier(.5,0,.9,.6)'}).onfinish=function(){ d.remove(); };
+}
+function Mixer(root,o){
+  var st=blank();
+  root.innerHTML=IDS.map(function(id){
+    return '<div class="mx-row" data-id="'+id+'"><button class="mx-sw" style="background:'+BASE[id].hex+'" aria-label="Tambah '+BASE[id].name+'"></button>'+
+      '<span class="mx-name">'+BASE[id].name+'</span><button class="mx-b minus" aria-label="Kurangi '+BASE[id].name+'"><i data-lucide="minus"></i></button>'+
+      '<b class="mx-n">0</b><button class="mx-b plus" aria-label="Tambah '+BASE[id].name+'"><i data-lucide="plus"></i></button></div>';
+  }).join('');
+  var total=function(){ return IDS.reduce(function(s,k){return s+st[k];},0); };
+  function draw(){ $$('.mx-row',root).forEach(function(r){ $('.mx-n',r).textContent=st[r.dataset.id]; }); }
+  function add(id,d){
+    if(d>0&&total()>=20){ toast('Gelasnya sudah penuh! Maksimal 20 tetes.'); return; }
+    var n=clamp(st[id]+d,0,10); if(n===st[id]) return; st[id]=n; draw();
+    if(d>0){ sfx.plop(); if(o.onDrop) o.onDrop(id); }
+    o.onChange(st);
+  }
+  root.addEventListener('click',function(e){
+    var row=e.target.closest('.mx-row'); if(!row) return;
+    add(row.dataset.id, e.target.closest('.minus')?-1:1);
+  });
+  return {st:st,total:total,set:function(a){ IDS.forEach(function(k){st[k]=a[k]||0;}); draw(); o.onChange(st); },reset:function(){ this.set(blank()); }};
+}
+
+/* =====================================================================
+   2. LAB PENCAMPURAN
+   ===================================================================== */
+var labBeaker=Beaker($('#beaker'),'lab');
+var labResult=$('#labResult');
+var labMixer=Mixer($('#labMixer'),{
+  onChange:function(st){ labBeaker.set(analyze(st),labMixer.total()); labResult.classList.add('hidden'); },
+  onDrop:function(id){ dropAnim($('#beaker'),BASE[id].hex); }
+});
+$('#btnClear').addEventListener('click',function(){ labMixer.reset(); say('Gelas sudah kosong. Ayo campur warna lagi!'); });
+$('#btnCheck').addEventListener('click',function(){
+  var a=labMixer.st, res=analyze(a);
+  if(res.empty){ sfx.bad(); say('Tambahkan dulu beberapa tetes warna ya!'); return; }
+  var text=mixSentence(a,res);
+  labResult.innerHTML='<div class="flex items-center gap-3 mb-2"><div class="swatch-big" style="background:'+res.hex+'"></div><div><div class="text-2xl font-extrabold leading-tight">'+res.name+'</div>'+
+    '<span class="pill">'+res.cat+'</span><div class="text-xs text-slate-500 font-bold mt-1">Kode warna '+res.hex.toUpperCase()+'</div></div></div><p class="p m-0">'+text+'</p>';
+  labResult.classList.remove('hidden'); labResult.classList.remove('bounce'); void labResult.offsetWidth; labResult.classList.add('bounce');
+  sfx.ok(); say(text);
+});
+var RECIPES=[['Merah + Kuning',{red:1,yellow:1}],['Kuning + Biru',{yellow:1,blue:1}],['Biru + Merah',{blue:1,red:1}],['Merah + Putih',{red:1,white:1}],['Biru + Hitam',{blue:1,black:1}],['Merah + Kuning + Biru',{red:1,yellow:1,blue:1}]];
+$('#recipes').innerHTML=RECIPES.map(function(r,i){ return '<button class="chip" data-i="'+i+'">'+r[0]+'</button>'; }).join('');
+$('#recipes').addEventListener('click',function(e){ var b=e.target.closest('.chip'); if(!b) return; labMixer.set(recipeOf(RECIPES[+b.dataset.i][1])); sfx.plop(); toast('Resep dipasang. Tekan Cek Hasil!'); });
+
+/* =====================================================================
+   3. TEORI: roda warna, demo sekunder/tersier, tint & shade
+   ===================================================================== */
+var wheelSvg=$('#wheel'), wheelHTML='', NSV='http://www.w3.org/2000/svg';
+function arc(cx,cy,r0,r1,a0,a1){
+  var p=function(r,a){ var t=a*Math.PI/180; return [cx+r*Math.cos(t),cy+r*Math.sin(t)]; };
+  var A=p(r1,a0),B=p(r1,a1),C=p(r0,a1),Dd=p(r0,a0);
+  return 'M'+A+'A'+r1+' '+r1+' 0 0 1 '+B+'L'+C+'A'+r0+' '+r0+' 0 0 0 '+Dd+'Z';
+}
+WHEEL.forEach(function(w,i){
+  var c=(i-4)*30-90, hex=analyze(recipeOf({red:w.v[0],yellow:w.v[1],blue:w.v[2]})).hex;
+  wheelHTML+='<path class="seg" data-i="'+i+'" d="'+arc(110,110,48,102,c-14.6,c+14.6)+'" fill="'+hex+'" stroke="#fff" stroke-width="2" tabindex="0" role="button" aria-label="'+w.n+'"/>';
+});
+wheelHTML+='<circle cx="110" cy="110" r="42" fill="#f8fafc"/><text x="110" y="106" text-anchor="middle" font-size="13" font-weight="800" fill="#475569" font-family="Nunito,sans-serif">Roda</text><text x="110" y="124" text-anchor="middle" font-size="13" font-weight="800" fill="#475569" font-family="Nunito,sans-serif">Warna</text>';
+wheelSvg.innerHTML=wheelHTML;
+function pickWheel(i){
+  var w=WHEEL[i]; $$('.seg',wheelSvg).forEach(function(s){ s.classList.toggle('on',+s.dataset.i===i); });
+  var t=w.t==='primer'?'warna primer':(w.t==='sekunder'?'warna sekunder':'warna tersier');
+  var txt=w.n+'. Ini adalah '+t+'.'; $('#wheelInfo').textContent=txt; say(txt);
+}
+wheelSvg.addEventListener('click',function(e){ var s=e.target.closest('.seg'); if(s) pickWheel(+s.dataset.i); });
+wheelSvg.addEventListener('keydown',function(e){ var s=e.target.closest('.seg'); if(s&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); pickWheel(+s.dataset.i); } });
+
+var ING={red:{red:1},yellow:{yellow:1},blue:{blue:1},orange:{red:.5,yellow:.5},green:{yellow:.5,blue:.5},purple:{red:.5,blue:.5}};
+var ING_N={red:'Merah',yellow:'Kuning',blue:'Biru',orange:'Jingga',green:'Hijau',purple:'Ungu'};
+var DEMOS_SEK=[['red','yellow'],['yellow','blue'],['blue','red']];
+var DEMOS_TER=[['red','orange'],['yellow','orange'],['yellow','green'],['blue','green'],['blue','purple'],['red','purple']];
+var ingHex=function(k){ return analyze(recipeOf(ING[k])).hex; };
+function demoMix(p){ var a=blank(); p.forEach(function(k){ for(var c in ING[k]) a[c]+=ING[k][c]; }); return a; }
+function demoHTML(list,cls){
+  return list.map(function(p,i){
+    var a=demoMix(p), res=analyze(a);
+    return '<button class="demo" data-g="'+cls+'" data-i="'+i+'"><span class="c ca" style="background:'+ingHex(p[0])+'"></span><span class="op">+</span><span class="c cb" style="background:'+ingHex(p[1])+'"></span><span class="op">=</span>'+
+      '<span class="c cr" style="--rc:'+res.hex+'">?</span><span class="lbl">'+ING_N[p[0]]+' + '+ING_N[p[1]]+'</span></button>';
+  }).join('');
+}
+$('#demoSek').innerHTML=demoHTML(DEMOS_SEK,'s'); $('#demoTer').innerHTML=demoHTML(DEMOS_TER,'t');
+function onDemo(e,list){
+  var b=e.target.closest('.demo'); if(!b) return;
+  var p=list[+b.dataset.i], a=demoMix(p), res=analyze(a);
+  b.classList.remove('run'); void b.offsetWidth; b.classList.add('run');
+  var cr=$('.cr',b); cr.textContent=''; cr.style.background=res.hex; $('.lbl',b).innerHTML=ING_N[p[0]]+' + '+ING_N[p[1]]+' = <b>'+res.name+'</b>';
+  var kind=res.catKey==='sekunder'?'warna sekunder':'warna tersier';
+  var txt=ING_N[p[0]]+' ditambah '+ING_N[p[1]]+' menjadi '+res.name+'. Ini adalah '+kind+'!';
+  sfx.ok(); say(txt);
+}
+$('#demoSek').addEventListener('click',function(e){ onDemo(e,DEMOS_SEK); });
+$('#demoTer').addEventListener('click',function(e){ onDemo(e,DEMOS_TER); });
+
+// Tint & Shade
+var TS_BASES=['red','orange','yellow','green','blue','purple'], tsBase='red', tsLevel=0;
+function tsMix(k,n){ var a=recipeOf(ING[k]); if(n>0) a.white=n*.5; if(n<0) a.black=-n*.3; return a; }
+$('#tsChips').innerHTML=TS_BASES.map(function(k){ return '<button class="chip'+(k===tsBase?' on':'')+'" data-k="'+k+'"><i style="background:'+ingHex(k)+'"></i>'+ING_N[k]+'</button>'; }).join('');
+function tsRender(){
+  var res=analyze(tsMix(tsBase,tsLevel));
+  $('#tsSwatch').style.background=res.hex; $('#tsName').textContent=res.name; $('#tsCat').textContent=tsLevel===0?'Warna asli':res.cat;
+  $('#tsStrip').innerHTML=[-4,-3,-2,-1,0,1,2,3,4].map(function(n){ return '<button data-n="'+n+'" class="'+(n===tsLevel?'on':'')+'" style="background:'+analyze(tsMix(tsBase,n)).hex+'" aria-label="Tingkat '+n+'"></button>'; }).join('');
+}
+function tsSay(){
+  var res=analyze(tsMix(tsBase,tsLevel)), b=ING_N[tsBase], txt;
+  if(tsLevel>0) txt=b+' ditambah Putih menjadi '+res.name+'. Ini disebut tint: warnanya menjadi lebih terang.';
+  else if(tsLevel<0) txt=b+' ditambah Hitam menjadi '+res.name+'. Ini disebut shade: warnanya menjadi lebih gelap.';
+  else txt='Kembali ke '+b+', warna aslinya.';
+  say(txt);
+}
+$('#tsChips').addEventListener('click',function(e){ var c=e.target.closest('.chip'); if(!c) return; tsBase=c.dataset.k; tsLevel=0; $$('#tsChips .chip').forEach(function(x){x.classList.toggle('on',x===c);}); tsRender(); say(ING_N[tsBase]); });
+$('#tsWhite').addEventListener('click',function(){ tsLevel=Math.min(4,tsLevel+1); tsRender(); sfx.plop(); tsSay(); });
+$('#tsBlack').addEventListener('click',function(){ tsLevel=Math.max(-4,tsLevel-1); tsRender(); sfx.plop(); tsSay(); });
+$('#tsStrip').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; tsLevel=+b.dataset.n; tsRender(); tsSay(); });
+tsRender();
+
+/* =====================================================================
+   4. KUIS & MINI GAME
+   ===================================================================== */
+var QUIZ=[
+  {t:'make',q:'Buatlah warna Hijau!',target:{step:6,mod:'none'},hint:'Hijau lahir dari dua warna primer yang sama banyak. Coba Kuning dan Biru.',ans:'Kuning ditambah Biru menjadi Hijau.'},
+  {t:'guess',q:'Tebak, warna apakah Merah + Kuning?',mix:{red:1,yellow:1},opts:[['Jingga',{red:1,yellow:1}],['Hijau',{yellow:1,blue:1}],['Ungu',{red:1,blue:1}]],correct:'Jingga',ans:'Merah ditambah Kuning menjadi Jingga. Ini warna sekunder.'},
+  {t:'make',q:'Buatlah warna Merah Muda (Pink)!',target:{step:0,mod:'tint'},hint:'Untuk membuat warna lebih terang, tambahkan Putih ke warna Merah.',ans:'Merah ditambah Putih menjadi Merah Muda, atau pink. Ini disebut tint.'},
+  {t:'make',q:'Buatlah warna Ungu!',target:{step:10,mod:'none'},hint:'Ungu lahir dari campuran Biru dan Merah yang sama banyak.',ans:'Biru ditambah Merah menjadi Ungu.'},
+  {t:'guess',q:'Tebak, warna apakah Biru + Kuning?',mix:{blue:1,yellow:1},opts:[['Hijau',{yellow:1,blue:1}],['Jingga',{red:1,yellow:1}],['Cokelat',{red:1,yellow:1,blue:1}]],correct:'Hijau',ans:'Biru ditambah Kuning menjadi Hijau. Ini warna sekunder.'},
+  {t:'make',q:'Buatlah warna Jingga!',target:{step:2,mod:'none'},hint:'Jingga lahir dari Merah dan Kuning yang sama banyak.',ans:'Merah ditambah Kuning menjadi Jingga.'},
+  {t:'make',q:'Buatlah warna Biru Tua!',target:{step:8,mod:'shade'},hint:'Untuk menggelapkan warna, tambahkan sedikit Hitam ke warna Biru.',ans:'Biru ditambah Hitam menjadi Biru Tua. Ini disebut shade.'},
+  {t:'guess',q:'Tebak, warna apakah Merah + Biru?',mix:{red:1,blue:1},opts:[['Hijau',{yellow:1,blue:1}],['Ungu',{red:1,blue:1}],['Jingga',{red:1,yellow:1}]],correct:'Ungu',ans:'Merah ditambah Biru menjadi Ungu. Ini warna sekunder.'},
+  {t:'make',q:'Buatlah warna Kuning Hijau (tersier)!',target:{step:5,mod:'none'},hint:'Kuning harus lebih banyak daripada Biru. Coba 3 tetes Kuning dan 1 tetes Biru.',ans:'Tiga bagian Kuning ditambah satu bagian Biru menjadi Kuning Hijau.'},
+  {t:'guess',q:'Tebak, warna apakah Merah + Putih?',mix:{red:1,white:1},opts:[['Merah Muda (Pink)',{red:1,white:1}],['Jingga',{red:1,yellow:1}],['Merah Tua',{red:1,black:1}]],correct:'Merah Muda (Pink)',ans:'Merah ditambah Putih menjadi Merah Muda, atau pink. Ini disebut tint.'},
+  {t:'make',q:'Buatlah warna Cokelat dari tiga warna primer!',target:{brown:true},hint:'Campurkan Merah, Kuning, dan Biru dalam jumlah yang sama.',ans:'Merah, Kuning, dan Biru bercampur menjadi Cokelat.'}
+];
+var PRAISE=['Hebat sekali!','Keren! Jawabanmu benar!','Pintar! Kamu berhasil!','Luar biasa! Tepat sekali!'];
+var RETRY=['Ups, belum tepat.','Hampir benar!','Belum pas, tapi jangan menyerah.'];
+var pick=function(a){ return a[Math.floor(Math.random()*a.length)]; };
+function matches(res,t){
+  if(res.empty) return false;
+  if(t.brown) return res.brown&&res.mod==='none';
+  return !res.brown&&res.P>0&&res.mod===t.mod&&res.idx===t.step&&res.dev<=14;
+}
+function confetti(){
+  var cols=['#ef4444','#f59e0b','#facc15','#22c55e','#3b82f6','#a855f7','#ec4899'];
+  for(var i=0;i<46;i++){
+    var c=document.createElement('i'); c.className='confetti'; c.style.left=Math.random()*100+'vw'; c.style.background=pick(cols); document.body.appendChild(c);
+    c.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:'translate(' + (Math.random()*160-80) + 'px,' + (innerHeight+40) + 'px) rotate(' + (Math.random()*720) + 'deg)',opacity:.9}],
+      {duration:1400+Math.random()*1100,delay:Math.random()*300,easing:'cubic-bezier(.2,.6,.4,1)'}).onfinish=(function(el){return function(){el.remove();};})(c);
+  }
+}
+var Q={i:0,score:0,tries:0,done:false,mixer:null,beaker:null};
+var quizEl=$('#quiz');
+function renderQuiz(){
+  if(Q.i>=QUIZ.length){ return renderEnd(); }
+  var q=QUIZ[Q.i]; Q.tries=0; Q.done=false;
+  var h='<div class="card mb-4"><div class="flex items-center justify-between mb-2"><b>Soal '+(Q.i+1)+' dari '+QUIZ.length+'</b><span class="pill">⭐ '+Q.score+'</span></div>'+
+        '<div class="bar mb-3"><i style="width:'+(Q.i/QUIZ.length*100)+'%"></i></div><h2 class="h2" id="qText">'+q.q+'</h2>';
+  if(q.t==='make'){
+    h+='<div id="qBeaker" class="beaker" style="width:8rem;height:8rem"></div><div id="qMixer"></div>'+
+       '<div class="flex gap-3 mt-4"><button id="qCheck" class="btn green flex-1"><i data-lucide="check"></i> Periksa</button><button id="qReset" class="btn gray"><i data-lucide="rotate-ccw"></i></button></div>';
+  } else {
+    var mk=Object.keys(q.mix);
+    h+='<div class="flex items-center justify-center gap-3 my-3">'+mk.map(function(k){ return '<span class="swatch-big" style="width:4rem;height:4rem;background:'+BASE[k].hex+'"></span>'; }).join('<b class="text-2xl text-slate-500">+</b>')+'<b class="text-2xl text-slate-500">=</b><span class="swatch-big grid place-items-center text-3xl font-extrabold text-slate-400" style="width:4rem;height:4rem;background:#f1f5f9">?</span></div><div id="qOpts">'+
+       q.opts.map(function(o,i){ return '<button class="choice" data-i="'+i+'"><span class="c" style="background:'+analyze(recipeOf(o[1])).hex+'"></span>'+o[0]+'</button>'; }).join('')+'</div>';
+  }
+  h+='<div id="qFb" class="hidden mt-3 rounded-2xl p-3 font-bold"></div><button id="qNext" class="btn w-full mt-3 hidden">Lanjut <i data-lucide="arrow-right"></i></button></div>';
+  quizEl.innerHTML=h; icons();
+  if(q.t==='make'){
+    Q.beaker=Beaker($('#qBeaker'),'q');
+    Q.mixer=Mixer($('#qMixer'),{onChange:function(st){ Q.beaker.set(analyze(st),Q.mixer.total()); },onDrop:function(id){ dropAnim($('#qBeaker'),BASE[id].hex); }});
+    icons();
+    $('#qCheck').addEventListener('click',checkMake); $('#qReset').addEventListener('click',function(){ Q.mixer.reset(); });
+  } else {
+    $('#qOpts').addEventListener('click',checkGuess);
+  }
+  $('#qNext').addEventListener('click',function(){ Q.i++; renderQuiz(); window.scrollTo({top:0,behavior:'smooth'}); });
+  say(q.q);
+}
+function feedback(ok,text,reveal){
+  var fb=$('#qFb'), card=fb.parentNode;
+  fb.classList.remove('hidden'); fb.style.background=ok?'#f0fdf4':'#fef2f2'; fb.style.color=ok?'#166534':'#991b1b';
+  fb.innerHTML=(ok?'🎉 ':'💡 ')+text;
+  card.classList.remove('shake','bounce'); void card.offsetWidth; card.classList.add(ok?'bounce':'shake');
+  if(ok){ sfx.ok(); confetti(); } else sfx.bad();
+  say(text);
+  if(ok||reveal){ $('#qNext').classList.remove('hidden'); $('#qNext').textContent=(Q.i===QUIZ.length-1?'Lihat Skor ':'Lanjut '); var ic=document.createElement('i'); ic.setAttribute('data-lucide','arrow-right'); $('#qNext').appendChild(ic); icons();
+    var c=$('#qCheck'); if(c) c.disabled=true; $$('#qOpts .choice').forEach(function(x){x.disabled=true;}); }
+}
+function checkMake(){
+  var q=QUIZ[Q.i], res=analyze(Q.mixer.st);
+  if(res.empty){ sfx.bad(); say('Tambahkan dulu beberapa tetes warna ya!'); return; }
+  if(matches(res,q.target)){ Q.score+=Q.tries===0?1:.5; $('.pill',quizEl).textContent='⭐ '+Q.score; feedback(true,pick(PRAISE)+' '+q.ans); return; }
+  Q.tries++;
+  if(Q.tries>=2) feedback(false,'Tidak apa-apa, ayo belajar bersama. '+q.ans,true);
+  else feedback(false,pick(RETRY)+' Warnamu menjadi '+res.name+'. Petunjuk: '+q.hint+' Coba lagi ya!',false);
+}
+function checkGuess(e){
+  var b=e.target.closest('.choice'); if(!b||b.disabled) return;
+  var q=QUIZ[Q.i], o=q.opts[+b.dataset.i];
+  if(o[0]===q.correct){ b.classList.add('good'); Q.score+=Q.tries===0?1:.5; $('.pill',quizEl).textContent='⭐ '+Q.score; feedback(true,pick(PRAISE)+' '+q.ans); return; }
+  b.classList.add('bad'); b.disabled=true; Q.tries++;
+  if(Q.tries>=2){ $$('#qOpts .choice').forEach(function(x){ if(q.opts[+x.dataset.i][0]===q.correct) x.classList.add('good'); }); feedback(false,'Jawaban yang benar adalah '+q.correct+'. '+q.ans,true); }
+  else feedback(false,pick(RETRY)+' Coba pikirkan lagi, kamu pasti bisa!',false);
+}
+function renderEnd(){
+  var s=Q.score, n=QUIZ.length, pct=s/n, stars=pct>.8?3:(pct>.5?2:1);
+  var msg=pct>.8?'Kamu hebat sekali! Kamu sudah jago mencampur warna.':(pct>.5?'Bagus! Sedikit lagi kamu jadi ahli warna.':'Jangan menyerah! Ulangi lab dan teori, lalu coba kuis lagi.');
+  quizEl.innerHTML='<div class="card text-center"><div class="text-6xl mb-2">'+'⭐'.repeat(stars)+'</div><h2 class="h2">Kuis Selesai!</h2><p class="p text-lg">Skormu <b>'+s+'</b> dari <b>'+n+'</b></p><p class="p">'+msg+'</p>'+
+    '<button id="qAgain" class="btn w-full"><i data-lucide="rotate-ccw"></i> Main Lagi</button></div>';
+  icons(); confetti(); sfx.ok(); say('Kuis selesai! Skormu '+s+' dari '+n+'. '+msg);
+  $('#qAgain').addEventListener('click',function(){ Q.i=0; Q.score=0; renderQuiz(); });
+}
+function startQuiz(){
+  quizEl.innerHTML='<div class="card text-center"><div class="text-6xl mb-2">🎨</div><h2 class="h2">Kuis & Mini Game Warna</h2><p class="p">Ada '+QUIZ.length+' tantangan seru: membuat warna dan menebak hasil campuran. Siap?</p><button id="qStart" class="btn green w-full"><i data-lucide="gamepad-2"></i> Mulai Bermain</button></div>';
+  icons(); $('#qStart').addEventListener('click',function(){ Q.i=0; Q.score=0; renderQuiz(); });
+}
+startQuiz();
+
+icons(); resizePad();
+})();
+</script>
+</body>
+</html>
